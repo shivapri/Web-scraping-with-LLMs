@@ -71,11 +71,3 @@ class PrwebSpider(CrawlSpider):
             self.logger.warning(f"Failed to parse publication date '{date_text}': {e}")
             return False
 
-
-
-
-        #item["domain_id"] = response.xpath('//input[@id="sid"]/@value').get()
-        #item["name"] = response.xpath('//div[@id="name"]').get()
-        #item["description"] = response.xpath('//div[@id="description"]').get()
-        # return item
-        # yield response.url
