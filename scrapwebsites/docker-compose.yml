@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  globenews_spider:
+    build: .
+    volumes:
+      - ./Data:/usr/src/app/Data
+    entrypoint: ["python", "main.py", "globenews"]
+
+  newswire2_spider:
+    build: .
+    volumes:
+      - ./Data:/usr/src/app/Data
+    entrypoint: ["python", "main.py", "newswire2"]
+
+  prnewswire_spider:
+    build: .
+    volumes:
+      - ./Data:/usr/src/app/Data
+    entrypoint: ["python", "main.py", "prnewswire"]
+
+  prweb_spider:
+    build: .
+    volumes:
+      - ./Data:/usr/src/app/Data
+    entrypoint: ["python", "main.py", "prweb"]
