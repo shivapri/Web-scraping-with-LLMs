@@ -2,30 +2,6 @@ import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from functools import reduce
-## articles xpath //div[contains(@class,'col-md-8 col-sm-8 ')]//div[contains(@class,'row newsCards')]//a
-## next page path //div[contains(@class,'pagination-bar')]//ul[contains(@class,'pagination')]//a[@aria-label="Next"]
-
-# class PrnewswireSpider(CrawlSpider):
-#     name = "prnewswire"
-#     allowed_domains = ["www.prnewswire.com"]
-#     # start_urls = ["https://www.prnewswire.com/news-releases/news-releases-list"]
-#     user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36'
-
-#     def start_requests(self):
-#         yield scrapy.Request(url='https://www.prnewswire.com/news-releases/news-releases-list', headers={
-#             'user-agent':self.user_agent
-#         })
-#     def set_user_agent(self, request, spider):
-#         request.headers['User-Agent'] = self.user_agent
-#         return request
-
-#     rules = (Rule(LinkExtractor(restrict_xpaths=("//div[contains(@class,'col-md-8 col-sm-8 ')]//div[contains(@class,'row newsCards')]//a")), callback="parse_item", follow=True,process_request='set_user_agent'),
-#             #  Rule(LinkExtractor(allow=("//div[contains(@class,'col-md-8 col-sm-8 ')]//div[contains(@class,'row newsCards')]//a")), callback="parse_item", follow=True,process_request='set_user_agent'),
-#         Rule(LinkExtractor(restrict_xpaths=("//div[contains(@class,'pagination-bar')]//ul[contains(@class,'pagination')]//a[@aria-label='Next']")),process_request='set_user_agent'))
-
-#     def parse_item(self, response): 
-#         print("The url is: ",response.url)
-
 from datetime import datetime
 
 import time
@@ -110,19 +86,11 @@ class PrnewswireSpider(scrapy.Spider):
         overall_articles_paragraph = reduce(lambda x, y: x + "\n" + y, articles_paragraph) if articles_paragraph else ""
         overall_paragraph = overall_articles_listing+"\n"+overall_articles_paragraph
         print("The article languages: ",article_languages)
-        # 'article_name': article_name,
-        #     'published_date': published_date,
-        #     'source_url': response.urljoin(source_url) if source_url else None,
-        #     'source': source,
-        #     'articles_paragraph': concatenated_paragraph,
-        #     'article_contacts': article_contacts_direct,
-        #     'company_name': company_name,
-        
 
         yield {
             'url': response.url,
             'title': response.xpath('//h1/text()').get(default='').strip(),
             'date': response.meta['date'],
             'published_date':published_date,
-            'article_paragraph':articles_paragraph
+            'article_paragraph':overall_paragraph
         }
